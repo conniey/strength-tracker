@@ -29,7 +29,7 @@ steps:
 # Don't publish artifact if we are running a PR build.
 - task: PublishPipelineArtifact@0
   displayName: 'Publish packages'
-  condition: ne(variables['Build.Reason'], 'PullRequest')
+  condition: and(ne(variables['Build.Reason'], 'PullRequest'))
   inputs:
     artifactName: 'packages'
     targetPath: $(Build.ArtifactStagingDirectory)
