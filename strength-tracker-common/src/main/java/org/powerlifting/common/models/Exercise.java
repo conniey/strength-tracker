@@ -1,4 +1,4 @@
-// Licensed under the MIT License.Bar
+// Licensed under the MIT License.
 package org.powerlifting.common.models;
 
 public class Exercise {
