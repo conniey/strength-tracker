@@ -11,7 +11,7 @@ pool:
 
 variables:
   defaultOptions: '--batch-mode --fail-at-end'
-  loggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --no-transfer-progress'
+  loggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 steps:
 - task: Maven@3
@@ -29,7 +29,7 @@ steps:
 # Don't publish artifact if we are running a PR build.
 - task: PublishPipelineArtifact@0
   displayName: 'Publish packages'
-  condition: and(ne(variables['Build.Reason'], 'PullRequest'))
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   inputs:
     artifactName: 'packages'
     targetPath: $(Build.ArtifactStagingDirectory)
