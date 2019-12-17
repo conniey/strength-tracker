@@ -50,3 +50,9 @@ fabric.properties
 
 # Ignore target files.
 target/
+
+# VS code
+.classpath
+.project
+.factorypath
+.settings/
