@@ -14,4 +14,8 @@
   <artifactId>strength-tracker-common</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
+  <name>Strength Tracker - Common</name>
+  <description>Common classes in Strength Tracker</description>
+  <url>https://github.com/conniey/strength-tracker</url>
+
 </project>
