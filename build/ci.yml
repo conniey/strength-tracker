@@ -11,7 +11,7 @@ pool:
 
 variables:
   defaultOptions: '--batch-mode --fail-at-end'
-  loggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=info'
+  loggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --no-transfer-progress'
 
 steps:
 - task: Maven@3
@@ -22,12 +22,14 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    options: '"-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)"'
+    options: '$(defaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)"'
     publishJUnitResults: true
     goals: 'package'
 
+# Don't publish artifact if we are running a PR build.
 - task: PublishPipelineArtifact@0
   displayName: 'Publish packages'
+  condition: ne(variables['Build.Reason'], 'PullRequest')
   inputs:
     artifactName: 'packages'
     targetPath: $(Build.ArtifactStagingDirectory)
