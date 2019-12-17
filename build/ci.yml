@@ -1,0 +1,33 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  defaultOptions: '--batch-mode --fail-at-end'
+  loggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=info'
+
+steps:
+- task: Maven@3
+  displayName: 'Build, test, and package'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '$(loggingOptions)'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    options: '"-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)"'
+    publishJUnitResults: true
+    goals: 'package'
+
+- task: PublishPipelineArtifact@0
+  displayName: 'Publish packages'
+  inputs:
+    artifactName: 'packages'
+    targetPath: $(Build.ArtifactStagingDirectory)
